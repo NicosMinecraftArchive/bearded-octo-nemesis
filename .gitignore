@@ -1,1 +1,7 @@
 bin
+.idea
+*.iml
+*.jar
+target/
+
+dependency-reduced-pom.xml
