@@ -184,16 +184,7 @@ public class NewGUI {
                 File inputDir = fc.getSelectedFile().getParentFile();
                 String inputName = fc.getSelectedFile().getName();
 
-                String outputName;
-                if (inputName.contains("*")) {
-                    outputName = inputName + ".deobf.jar";
-                } else if (inputName.contains(".")) {
-                    int i = inputName.lastIndexOf('.');
-                    outputName = inputName.substring(0, i) + ".deobf." + inputName.substring(i + 1);
-                } else
-                    outputName = inputName + ".deobf.jar";
-
-                txtOutputFile.setText(new File(inputDir, outputName).getAbsolutePath());
+                txtOutputFile.setText(new File(inputDir, getOutputName(inputName)).getAbsolutePath());
                 //}
             }
         });
@@ -921,14 +912,8 @@ public class NewGUI {
                                  Files.newDirectoryStream(Paths.get(inputFileStr.substring(0, iP)),
                                          inputFileStr.substring(iP + 1))) {
                         dirStream.forEach(path -> {
-                            String outputName;
                             String inputName = path.toString();
-                            if (inputName.contains(".")) {
-                                int i = inputName.lastIndexOf('.');
-                                outputName = inputName.substring(0, i) + ".deobf." + inputName.substring(i + 1);
-                            } else
-                                outputName = inputName + ".deobf.jar";
-                            filesToProcess.put(new File(inputName), new File(outputName));
+                            filesToProcess.put(new File(inputName), new File(getOutputName(inputName)));
                         });
                     }
                 } else {
@@ -1077,4 +1062,14 @@ public class NewGUI {
         }
         return s.toString();
     }
+
+    private static String getOutputName(String inputName) {
+        if (inputName.contains(".")) {
+            int i = inputName.lastIndexOf('.');
+            return inputName.substring(0, i) + ".deobf.jar";
+        } else {
+            return inputName + ".deobf.jar";
+        }
+    }
+
 }
