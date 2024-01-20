@@ -234,10 +234,17 @@ public class MappingLoader_MCP {
 
 
     public static String getMCVer(File mcpDir) throws IOException {
-        try (Scanner in = new Scanner(new File(mcpDir, "conf/version.cfg"))) {
+        String settingToFind = "ClientVersion";
+        File fileToSearchIn = new File(mcpDir, "conf/version.cfg");
+        if (!fileToSearchIn.exists()) {
+            settingToFind = "MD5Client";
+            fileToSearchIn = new File(mcpDir, "conf/mcp.cfg");
+        }
+
+        try (Scanner in = new Scanner(fileToSearchIn)) {
             while (in.hasNextLine()) {
                 String line = in.nextLine();
-                if (line.startsWith("ClientVersion"))
+                if (line.startsWith(settingToFind))
                     return line.split("=")[1].trim();
             }
             return "unknown";
